@@ -1,0 +1,13 @@
+.content {
+    flex: 1;
+    padding: 20px;
+    margin-left: 40px;
+}
+/* Định dạng lớp content */
+.content2 {
+  width: 99vw; /* Chiếm toàn bộ chiều rộng màn hình */  
+  background-color: #ffffff; /* Màu nền trắng */  
+  margin: 0; /* Loại bỏ khoảng cách mặc định */
+  padding: 20px; /* Loại bỏ padding mặc định */
+  box-sizing: border-box; /* Đảm bảo padding và border không làm tăng kích thước */
+}

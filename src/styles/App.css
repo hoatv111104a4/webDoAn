@@ -1,0 +1,12 @@
+@import "Reset.css";
+
+.app {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}

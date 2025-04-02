@@ -1,0 +1,205 @@
+.do-an-item {
+  display: flex;
+  /* Sử dụng Flexbox để sắp xếp theo hàng ngang */
+  align-items: center;
+  /* Căn giữa theo chiều dọc */
+  justify-content: space-between;
+  /* Đẩy logo sang trái và thông tin sang phải */
+  border: 1px solid #eaeaea;
+  /* Màu xanh dương nhạt */
+  padding: 10px;
+  margin: 20px 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Hiệu ứng đổ bóng */
+  transition: transform 0.3s, box-shadow 0.3s;
+  /* Hiệu ứng mượt */
+}
+
+.do-an-item:hover {
+  transform: translateY(-5px);
+  /* Hiệu ứng nổi lên khi hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  /* Đổ bóng mạnh hơn khi hover */
+  border-color: #c1c1c2;
+  /* Đổi màu border khi hover */
+}
+
+.do-an-left {
+  flex: 1;
+  /* Chiếm 1 phần không gian */
+  max-width: 150px;
+  /* Giới hạn kích thước logo */
+}
+
+.do-an-img {
+  width: 100%;
+  height: 120px;  
+  border-radius: 10px;
+}
+
+.do-an-right {
+  flex: 3;
+  /* Chiếm 3 phần không gian */
+  padding-left: 20px;
+  /* Tạo khoảng cách giữa logo và thông tin */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.do-an-right h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.do-an-right p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 10px 20px;
+  margin: 0 5px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 20px;
+}
+
+.pagination button:hover {
+  background-color: #eaeaea;
+}
+
+.pagination button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  margin: 0 10px;
+  font-size: 1rem;
+}
+
+.btn-add-food ,.btn-reset{
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  margin-right: 10px;
+  margin-top: 16px;
+}
+
+.btn-add-food:hover {
+  background: #c82333;
+}
+.do-an-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.btn-details,.btn-delete{
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+.p-loai-do-an{
+  background-color: #d5d5d6;
+  border: 1px solid gainsboro;
+  padding: 5px 10px;
+  border-radius: 20px;
+  text-align: center;
+  width: 150px;
+}
+/* Thanh tìm kiếm */
+.search-bar {
+  position: relative;
+  flex: 1; /* Cho phép thanh tìm kiếm chiếm không gian linh hoạt trong do-an-header */
+  margin: 0 20px; /* Khoảng cách hai bên để không sát với tiêu đề và nút */
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #eaeaea;
+  border-radius: 20px; /* Bo tròn giống nút phân trang */
+  font-size: 1rem;
+  color: #333;
+  background-color: #f9f9f9; /* Nền nhạt tương tự nút phân trang */
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-input:focus {
+  border-color: #dc3545; /* Màu đỏ giống btn-add-food khi focus */
+  box-shadow: 0 0 5px rgba(220, 53, 69, 0.3); /* Hiệu ứng sáng nhẹ */
+}
+
+/* Danh sách gợi ý */
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #eaeaea;
+  border-radius: 10px; /* Bo tròn giống do-an-item */
+  list-style: none;
+  padding: 5px 0; /* Giảm padding để gọn hơn */
+  margin: 5px 0 0 0; /* Khoảng cách nhỏ giữa input và gợi ý */
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng giống do-an-item */
+}
+
+.suggestion-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  color: #333;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0; /* Màu hover nhẹ nhàng */
+}
+
+/* Trạng thái khi đang tải gợi ý */
+.suggestion-item.loading {
+  color: #666;
+  font-style: italic;
+  cursor: default;
+}
+
+/* Tinh chỉnh do-an-header để bố cục đẹp hơn */
+.do-an-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.do-an-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #333;
+}

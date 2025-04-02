@@ -1,0 +1,219 @@
+/* Header tổng thể */
+.header2 {
+  background: #fff;
+  color: #333;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header2-container {
+  width: 75%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Logo */
+.header2 .logo {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.header2 .logo img {
+  max-height: 50px;
+}
+
+/* Search bar */
+.header2 .search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.header2 .search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.header2 .search-input:focus {
+  border-color: #007bff;
+}
+
+/* User và Cart */
+.header2 .user,
+.header2 .cart {
+  flex: 0 0 auto;
+  margin-left: 20px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.header2 .user {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header2 .user:hover {
+  color: #007bff;
+}
+
+.header2 .cart {
+  display: flex;
+  align-items: center;
+}
+
+.header2 .cart:hover {
+  color: #ff0000;
+}
+
+/* Menu */
+.menu {
+  border-top: 1px solid #e0e0e0;
+  padding: 10px 0;
+  background: #fff;
+}
+
+.menu-container {
+  width: 75%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 10px;
+  
+}
+
+.menu-item {
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  padding: 5px 0px;
+  transition: color 0.3s ease;
+}
+
+.menu-item:hover {
+  color: #007bff;
+}
+
+/* Giao diện khi chưa đăng nhập */
+.account-options {
+  display: flex;
+  gap: 10px;
+}
+
+.account-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.account-button:hover {
+  background-color: #0056b3;
+}
+
+/* Giao diện khi đã đăng nhập */
+.account-logged-in {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-name {
+  font-weight: bold;
+  color: #333;
+}
+
+.logout-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.logout-button:hover {
+  background-color: #a71d2a;
+}
+
+/* Suggestions list (nếu có) */
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background: #f0f0f0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header2-container {
+    flex-wrap: wrap;
+    padding: 10px;
+  }
+
+  .header2 .logo,
+  .header2 .search {
+    flex: 1 1 100%;
+    margin-bottom: 10px;
+    justify-content: center;
+  }
+
+  .header2 .user,
+  .header2 .cart {
+    flex: 1 1 50%;
+    justify-content: center;
+  }
+
+  .menu-container {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .menu-item {
+    margin: 5px;
+  }
+}

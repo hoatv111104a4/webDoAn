@@ -1,0 +1,12 @@
+.header {
+    background: #f8f9fa;
+    color: #333;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    width: calc(100% - 250px); 
+    z-index: 1000;
+    border-bottom: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
