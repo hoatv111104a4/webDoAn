@@ -1,0 +1,34 @@
+.checkout-page {
+    padding: 20px;
+  }
+  
+  .checkout-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .checkout-form, .checkout-summary {
+    width: 48%;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .checkout-form h2, .checkout-summary h2 {
+    margin-bottom: 20px;
+  }
+  
+  .checkout-form label {
+    display: block;
+    margin-bottom: 15px;
+  }
+  
+  .checkout-form input, .checkout-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }

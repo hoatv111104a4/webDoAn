@@ -44,7 +44,7 @@ const SearchBar = ({ onSearch }) => {
       <input
         ref={inputRef}
         type="text"
-        className="search-input"
+        className="search-input "
         placeholder="Mời bạn nhập món ăn muốn tìm"
         value={searchTerm}
         onChange={handleSearchChange}
@@ -52,7 +52,7 @@ const SearchBar = ({ onSearch }) => {
         onBlur={handleInputBlur}
         aria-label="Recipient's username" aria-describedby="button-addon2"
       />
-      <button class="btn btn-outline-secondary" type="button" id="button-addon2" onClick={handleReset}>Reset</button>
+      <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={handleReset}>Reset</button>
       {showSuggestions && searchTerm.trim() && (
         <ul className="suggestions-list">
           {isFetchingSuggestions ? (

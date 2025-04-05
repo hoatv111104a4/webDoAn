@@ -12,7 +12,7 @@ const Sidebar = () => {
 
       <nav>
         <Link className="btn" to="/">
-          <i className="fas fa-home"></i>
+        <i className="fas fa-chart-bar"></i>
           Trang tổng quan
         </Link>
         <Link className="btn" to="/san-pham">
@@ -26,14 +26,14 @@ const Sidebar = () => {
         <Link className="btn" to="/tai-khoan">
           <i className="fas fa-user"></i>
           Tài khoản
+        </Link>        
+        <Link className="btn" to="/website/trang-chu">
+          <i className="fas fa-home"></i>
+          Trang chủ
         </Link>
         <Link className="btn" to="/dang-xuat">
           <i className="fas fa-sign-out-alt"></i>
           Đăng xuất
-        </Link>
-        <Link className="btn" to="/website/trang-chu">
-          <i className="fas fa-sign-out-alt"></i>
-          Trang chủ
         </Link>
       </nav>
     </aside>

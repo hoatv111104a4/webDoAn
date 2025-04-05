@@ -76,3 +76,38 @@ export const getAllDoChay = async (page = 0,size = 12)=>{
   }
 };
 
+export const getAllDoAnVat = async (page = 0 , size = 12)=>{
+  try {
+    const response = await apiClient.get("/hien-thi-do-an-vat",{
+      params:{page,size},
+    });
+    console.log("Dữ liệu API nhận được ",response.data);
+    return response.data || {content:[],totalPages:0};
+  } catch (error) {
+    throw new Error(error.response?.data||"Lỗi khi lấy danh sách đồ ăn")
+  }
+};
+
+export const getAllMonTrangMieng = async (page = 0 , size = 12)=>{
+  try {
+    const response = await apiClient.get("/hien-thi-do-trang-mieng",{
+      params:{page,size},
+    });
+    console.log("Dữ liệu API nhận được",response.data);
+    return response.data || {content:[],totalPages:0};
+  } catch (error) {
+    throw new Error(error.response?.data||"Lỗi khi lấy danh sách đồ ăn")
+  }
+};
+
+export const getAllNuocUong = async (page=0,size=12)=>{
+  try {
+    const response = await apiClient.get("/hien-thi-nuoc-uong",{
+      params:{page,size},
+    });
+    console.log("Dữ liệu API nhận được",response.data);
+    return response.data || {content:[],totalPages:0};
+  } catch (error) {
+    throw new Error(error.response?.data||"Lỗi khi lấy danh sách đồ ăn")
+  }
+};
