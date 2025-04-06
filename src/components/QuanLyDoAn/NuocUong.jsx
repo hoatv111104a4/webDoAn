@@ -63,19 +63,13 @@ const PageNuocuong = () => {
         ;
       </div>
       <div className="pagination">
-        <button
-          onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
-          disabled={page === 0 || isFetching}
-        >
+        <button onClick={() => setPage((prev) => Math.max(prev - 1, 0))} disabled={page === 0 || isFetching} >
           Trang trước
         </button>
         <span>
           Trang {page + 1} / {totalPages}
         </span>
-        <button
-          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages - 1))}
-          disabled={page === totalPages - 1 || isFetching}
-        >
+        <button onClick={() => setPage((prev) => Math.min(prev + 1, totalPages - 1))} disabled={page === totalPages - 1 || isFetching} >
           Trang sau
         </button>
       </div>

@@ -23,12 +23,16 @@ const LoginForm = ({ setUserInfo }) => {
 
     try {
       // Gửi yêu cầu đăng nhập đến API
-      const response = await axios.post("http://localhost:8080/api/nguoi-dung/dang-nhap", null, {
-        params: {
-          tenDangNhap: formData.email,
-          matKhau: formData.password,
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:8080/api/nguoi-dung/dang-nhap",
+        null,
+        {
+          params: {
+            tenDangNhap: formData.email,
+            matKhau: formData.password,
+          },
+        }
+      );
 
       // Hiển thị thông báo thành công
       toast.success("Đăng nhập thành công!");
@@ -64,24 +68,12 @@ const LoginForm = ({ setUserInfo }) => {
         <div className="form-group">
           <label>Email:</label>
           <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Nhập email"
-            required
-          />
+            type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Nhập email"  required />
         </div>
         <div className="form-group">
           <label>Mật khẩu:</label>
           <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Nhập mật khẩu"
-            required
-          />
+            type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Nhập mật khẩu"  required/>
         </div>
         <button type="submit" className="submit-button">
           Đăng Nhập

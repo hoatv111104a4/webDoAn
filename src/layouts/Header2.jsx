@@ -4,7 +4,8 @@ import logo from "../assets/logo2.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import SearchBar from "../components/Search/SearchBar";
 import { useCart } from "../components/QuanLyDoAn/CartContext";
-
+import CartModal from "../components/QuanLyDoAn/CartModal";
+import { Link as ScrollLink } from 'react-scroll';
 const Header2 = ({ onSearch, userInfo }) => {
   const navigate = useNavigate();
   const { cartItems } = useCart(); // Lấy danh sách sản phẩm từ context
@@ -87,39 +88,12 @@ const Header2 = ({ onSearch, userInfo }) => {
         </div>
       </nav>
 
-      {isCartModalOpen && (
-        <div className="cart-modal">
-          <div className="cart-modal-content">
-            <h2>Giỏ hàng của bạn</h2>
-            {cartItems.length > 0 ? (
-              <ul>
-                {cartItems.map((item, index) => (
-                  <li key={index}>
-                    <span>
-                      <strong>{item.ten}</strong>
-                    </span>{" "}
-                    -<span> Số lượng: {item.quantity}</span> -
-                    <span> Giá: {item.giaTien.toLocaleString()}₫</span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Giỏ hàng của bạn đang trống.</p>
-            )}
-            <button onClick={closeCartModal} className="close-modal-button">
-              Đóng
-            </button>
-            {cartItems.length > 0 && (
-              <button
-                className="checkout-button"
-                onClick={() => navigate("/website/checkout")}
-              >
-                Thanh toán ngay
-              </button>
-            )}
-          </div>
-        </div>
-      )}
+      {/* Sử dụng CartModal component */}
+      <CartModal
+        isOpen={isCartModalOpen}
+        onClose={closeCartModal}
+        cartItems={cartItems}
+      />
     </header>
   );
 };
