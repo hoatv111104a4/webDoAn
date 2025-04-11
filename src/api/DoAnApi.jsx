@@ -43,25 +43,19 @@ export const searchDoAn = async (ten, page, size, cancelToken) => {
 };
 
 // Hàm lấy tất cả đồ ăn (kết hợp hiển thị và tìm kiếm) với phân trang
-export const getAllDoAn2 = async (page = 0, size = 12, searchTerm = "") => {
+export const getAllTrangChu = async (page = 0, size = 12, tenMonAn = "") => {
   try {
-    // Kiểm tra xem có từ khóa tìm kiếm hay không (loại bỏ khoảng trắng)
-    const isSearch = searchTerm.trim() !== "";
-    // Gửi request GET tới endpoint tương ứng: "/tim-kiem" nếu có searchTerm, ngược lại là "/hien-thi"
-    const response = await apiClient.get(
-      isSearch ? "/tim-kiem" : "/hien-thi",
-      {
-        params: isSearch
-          ? { ten: searchTerm, page: page + 1, size } // Nếu tìm kiếm, page bắt đầu từ 1 (cộng 1)
-          : { page, size }, // Nếu hiển thị, page bắt đầu từ 0
+    const response = await apiClient.get("/hien-thi-trang-chu",{
+      params:{
+        tenMonAn:tenMonAn,
+        page:page,
+        size:size,
       }
-    );
-    console.log("Dữ liệu API nhận được:", response.data); // In dữ liệu để debug
-    // Trả về dữ liệu từ API hoặc object mặc định nếu không có dữ liệu
-    return response.data || { content: [], totalPages: 0 };
+    })
+    return response.data;
   } catch (error) {
-    // Ném lỗi với thông báo từ server hoặc mặc định
-    throw new Error(error.response?.data || "Lỗi khi lấy danh sách đồ ăn");
+    console.error("Lỗi khi gọi API tìm kiếm phân trang", error);
+    throw error;
   }
 };
 
@@ -134,3 +128,13 @@ export const getAllNuocUong = async (page = 0, size = 12) => {
     throw new Error(error.response?.data || "Lỗi khi lấy danh sách đồ ăn");
   }
 };
+
+export const getDoAnById = async (id)=>{
+  try {
+    const response = await apiClient.get(`/chi-tiet/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi khi lấy thôn tin hoc sinh vơi id",error);
+    throw error;
+  }
+}

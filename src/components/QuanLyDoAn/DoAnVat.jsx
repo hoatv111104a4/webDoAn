@@ -1,55 +1,79 @@
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllDoAnVat } from "../../api/DoAnApi";
 import "../../styles/SanPham/TranChuDoAn.css";
 
 const PageDoAnVat = () => {
-  const [page, setPage] = useState(0);
-  const [size] = useState(12);
-  const [selectedSearchTerm, setSelectedSearchTerm] = useState("");
-  const {
-    data: doAnVat,
-    error,
-    isLoading,
-    isFetching,
-  } = useQuery({
-    queryKey: ["doAnVat", page, selectedSearchTerm],
-    queryFn: () =>
-      selectedSearchTerm.trim()
-        ? getAllDoAnVat(page, size, selectedSearchTerm)
-        : getAllDoAnVat(page, size),
-    keepPreviousData: true,
-    staleTime: 5000,
-  });
+  const [doAnVatPage,setDoAnVatPage] = useState([]);
+  const [loading,setLoading] = useState(true);
+  const [error,setError] = useState(null);
+  const [currentPage,setCurrentPage] = useState(0);
+  const [totalPages,setTotalPages] = useState(0);
 
-  // Trạng thái tải dữ liệu
-  if (isLoading) return <p>Đang tải...</p>;
-  if (error) return <p>Lỗi: {error.message}</p>;
+  const pageSize = 12;
 
-  const danhSachMonAnVat = doAnVat?.content ?? [];
-  const totalPages = doAnVat?.totalPages ?? 0;
+  const handleFirtPage=()=>{
+    if (currentPage>0) {
+      setCurrentPage(0);
+    }
+  }
+  const handleLastPage=()=>{
+    if (currentPage<totalPages-1) {
+      setCurrentPage(totalPages-1);
+    }
+  }
+  const handlePreviosPage=()=>{
+    if (currentPage>0) {
+      setCurrentPage(currentPage-1);
+    }
+  }
+  const handleNextPage=()=>{
+    if (currentPage<totalPages-1) {
+      setCurrentPage(currentPage+1);
+    }
+  }
+
+  const handlePageClick=(page)=>{
+    setCurrentPage(page);
+  }
+  const pageNumbers = Array.from({length:totalPages},(_,index)=>index);
+  const fetchDoAnVat = async(page)=>{
+    try {
+      setLoading(true);
+      const data = await getAllDoAnVat(page,pageSize);
+      console.log("Dữ liệu từ back end",data);
+      setDoAnVatPage(data.content ||[]);
+      setTotalPages(data.totalPages||0);
+      setLoading(false);
+    } catch (error) {
+      setError("Không thể tải danh sách món ăn");
+      setLoading(false);
+    }
+  }
+  useEffect(()=>{
+    fetchDoAnVat(currentPage);
+  },[currentPage]);
+
+  if (loading) {
+    return <div>Đang tải dữ liệu .... </div>;
+  }
+  if (error) {
+    return <div>{error}</div>
+  }
 
   return (
     <div className="tran-chu-do-an">
       <h1 className="page-title">Món ăn vặt</h1>
       <div className="do-an-list">
-        {isFetching && <div className="search-loading">Đang tải ... </div>}
-        {danhSachMonAnVat.length > 0 ? (
+        
+        {doAnVatPage.length > 0 ? (
           <div className="do-an-grid">
-            {danhSachMonAnVat.map((da) => (
+            {doAnVatPage.map((da) => (
               <div key={da.id} className="card">
-                <img
-                  src={
-                    da.hinhAnh
-                      ? `http://localhost:8080/uploads/${da.hinhAnh}`
-                      : "/placeholder-image.png"
-                  }
-                  alt={da.ten}
-                  className="card-img-top do-an-img"
-                />
+                <img src={ da.hinhAnh ? `http://localhost:8080/uploads/${da.hinhAnh}` : "/placeholder-image.png" } alt={da.ten} className="card-img-top do-an-img" />
                 <div className="card-body do-an-info">
                   <h3 className="do-an-name">{da.ten}</h3>
-                  <p className="do-an-price">{da.giaTien.toLocaleString()} đ</p>
+                  <p className="do-an-price">{da.giaTien} đ</p>
                   <button className="do-an-order-btn">
                     <i className="fas fa-shopping-cart"></i> Đặt món
                   </button>
@@ -60,25 +84,22 @@ const PageDoAnVat = () => {
         ) : (
           <p>Không có món ăn nào</p>
         )}
-        ;
+        
       </div>
       <div className="pagination">
-        <button
-          onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
-          disabled={page === 0 || isFetching}
-        >
-          Trang trước
-        </button>
+        <button onClick={handleFirtPage} disabled={currentPage==0}>Trang đầu</button>
+        <button onClick={handleLastPage} disabled={currentPage==0}>Trang trước</button>
         <span>
-          Trang {page + 1} / {totalPages}
+          {
+            pageNumbers.map((pn)=>(
+              <button key={pn} onClick={()=>handlePageClick(pn)} disabled={currentPage===pn}>{pn+1}</button>
+            ))
+          }
         </span>
-        <button
-          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages - 1))}
-          disabled={page === totalPages - 1 || isFetching}
-        >
-          Trang sau
-        </button>
+        <button onClick={handleNextPage} disabled={currentPage>=totalPages-1}>Trang sau</button>
+        <button onClick={handleLastPage} disabled={currentPage==totalPages-1}>Trang cuối</button>
       </div>
+      
     </div>
   );
 };

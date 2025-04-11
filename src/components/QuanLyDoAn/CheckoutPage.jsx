@@ -3,42 +3,42 @@ import { useLocation } from "react-router-dom";
 import "../../styles/SanPham/CheckoutPage.css";
 
 const CheckoutPage = () => {
-  const location = useLocation();
-  const { cartItems = [] } = location.state || {}; // Lấy cartItems từ state, mặc định là mảng rỗng nếu không có dữ liệu
+  const { state } = useLocation();
+  const cartItems = state?.cartItems || [];
 
   // Tính tổng tiền
   const totalPrice = cartItems.reduce(
-    (total, item) => total + item.giaTien * item.quantity,
+    (sum, item) => sum + item.giaTien * item.soLuong,
     0
   );
 
   return (
     <div className="checkout-page">
-      <h1>Trang Thanh Toán</h1>
+      <h1>Thanh toán</h1>
       <div className="checkout-content">
         <div className="checkout-form">
           <h2>Thông tin người nhận</h2>
-          <label>
-            Tên người nhận:
-            <input type="text" placeholder="Nhập tên người nhận" />
-          </label>
-          <label>
-            Số điện thoại:
-            <input type="text" placeholder="Nhập số điện thoại" />
-          </label>
-          <label>
-            Địa chỉ nhận hàng:
-            <textarea placeholder="Nhập địa chỉ nhận hàng"></textarea>
-          </label>
+          <div className="form-group">
+            <label htmlFor="name">Tên người nhận</label>
+            <input id="name" type="text" placeholder="Nhập tên người nhận" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="phone">Số điện thoại</label>
+            <input id="phone" type="text" placeholder="Nhập số điện thoại" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="address">Địa chỉ nhận hàng</label>
+            <textarea id="address" placeholder="Nhập địa chỉ nhận hàng" />
+          </div>
         </div>
         <div className="checkout-summary">
-          <h2>Giỏ hàng của bạn</h2>
+          <h2>Giỏ hàng</h2>
           {cartItems.length > 0 ? (
             <>
               <table className="checkout-table">
                 <thead>
                   <tr>
-                    
+                    <th>Hình ảnh</th>
                     <th>Tên sản phẩm</th>
                     <th>Số lượng</th>
                     <th>Giá</th>
@@ -46,13 +46,25 @@ const CheckoutPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {cartItems.map((item, index) => (
-                    <tr key={index}>
-                      <td hidden>{item.id || index + 1}</td> {/* Nếu không có id thì dùng index */}
+                  {cartItems.map((item) => (
+                    <tr key={item.id}>
+                      <td>
+                        {item.hinhAnh ? (
+                          <img
+                            src={`http://localhost:8080/uploads/${item.hinhAnh}`}
+                            alt={item.ten}
+                            className="cart-item-image"
+                          />
+                        ) : (
+                          <span>Không có ảnh</span>
+                        )}
+                      </td>
                       <td>{item.ten}</td>
-                      <td>{item.quantity}</td>
-                      <td>{item.giaTien.toLocaleString()}₫</td>
-                      <td>{(item.giaTien * item.quantity).toLocaleString()}₫</td>
+                      <td>{item.soLuong}</td>
+                      <td>{parseInt(item.giaTien).toLocaleString()}₫</td>
+                      <td>
+                        {(item.giaTien * item.soLuong).toLocaleString()}₫
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -62,8 +74,9 @@ const CheckoutPage = () => {
               </div>
             </>
           ) : (
-            <p>Hiện tại chưa có thông tin sản phẩm.</p>
+            <p>Giỏ hàng hiện đang trống.</p>
           )}
+          <button className="btn btn-primary checkout-button">Xác nhận đơn hàng</button>
         </div>
       </div>
     </div>

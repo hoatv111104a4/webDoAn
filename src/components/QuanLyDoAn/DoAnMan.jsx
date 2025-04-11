@@ -1,48 +1,77 @@
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllDoAnMan } from "../../api/DoAnApi";
 import "../../styles/SanPham/TranChuDoAn.css";
 
 const PageDoAnMan = () =>{
-    const [page,setPage] = useState(0);
-    const [size] = useState(12);
-    const [selectedSearchTerm, setSelectedSearchTerm] = useState("");
-    const{data:doAnMan,error,isLoading,isFetching} = useQuery({queryKey:["doAnMan",page,selectedSearchTerm],
-        queryFn:()=>selectedSearchTerm.trim()? getAllDoAnMan(page,size,selectedSearchTerm):getAllDoAnMan(page,size),
-        keepPreviousData:true,
-        staleTime:5000,
-    });
+    const [monManPage,setMonManPage] = useState(0);
+    const [loading,setLoading] = useState(true);
+    const [error,setError] = useState(null);
+    const [currentPage,setCurrentPage] = useState(0);
+    const [totalPages,setTotalPages] = useState(0);
+    const pageSize = 12;
+    
+    const fetchMonMan = async(page)=>{
+      try{
+        setLoading(true);
+        const data = await getAllDoAnMan(page,pageSize);
+        console.log("Dữ liệu từ back end",data);
+        setMonManPage(data.content||[]);
+        setTotalPages(data.totalPages||0);
+        setLoading(false);
+      }catch(error){
+        setError("Không thể tải danh sách món mặn");
+        setLoading(false);
+      }
+    }
 
-    // Trạng thái tải dữ liệu
-    if (isLoading) return <p>Đang tải...</p>;
-    if (error) return <p>Lỗi: {error.message}</p>;
+    useEffect(()=>{
+      fetchMonMan(currentPage);
+    },[currentPage]);
 
-    const danhSachDoAnMan = doAnMan?.content ?? [];
-    const totalPages = doAnMan?.totalPages ?? 0;
+    const handlePreviosPage = ()=>{
+      if (currentPage>0) {
+        setCurrentPage(currentPage-1);
+      }
+    }
 
+    const handleNextPage = ()=>{
+      if(currentPage<totalPages-1){
+        setCurrentPage(currentPage+1);
+      }
+    }
+    const handleFirtPage =()=>{
+      setCurrentPage(0)
+    }
+    const handleLastPage=()=>{
+      setCurrentPage(totalPages-1)
+    }
+
+    if (loading) {
+      return <div>Đang tải dữ liệu .... </div>
+    }
+
+    if (error) {
+      return <div>{error}</div>
+  
+    }
+    const handlePageClick =(page)=>{
+      setCurrentPage(page);
+    }
+    const pageNumbers = Array.from({length:totalPages},(_,index)=>index);
+    
     return (
       <div className="tran-chu-do-an">
         <h1 className="page-title">Món ăn mặn</h1>
-        <div className="do-an-list">
-          {isFetching && <div className="search-loading">Đang tải ... </div>}
-          {danhSachDoAnMan.length > 0 ? (
+        <div className="do-an-list">          
+          {monManPage.length > 0 ? (
             <div className="do-an-grid">
-              {danhSachDoAnMan.map((da) => (
+              {monManPage.map((da) => (
                 <div key={da.id} className="card">
-                  <img
-                    src={
-                      da.hinhAnh
-                        ? `http://localhost:8080/uploads/${da.hinhAnh}`
-                        : "/placeholder-image.png"
-                    }
-                    alt={da.ten}
-                    className="card-img-top do-an-img"
-                  />
+                  <img src={ da.hinhAnh ? `http://localhost:8080/uploads/${da.hinhAnh}` : "/placeholder-image.png" } alt={da.ten} className="card-img-top do-an-img" />
                   <div className="card-body do-an-info">
                     <h3 className="do-an-name">{da.ten}</h3>
-                    <p className="do-an-price">
-                      {da.giaTien.toLocaleString()} đ
-                    </p>
+                    <p className="do-an-price">{da.giaTien} đ </p>
                     <button className="do-an-order-btn">
                       <i className="fas fa-shopping-cart"></i> Đặt món
                     </button>
@@ -52,29 +81,22 @@ const PageDoAnMan = () =>{
             </div>
           ) : (
             <p>Không có món ăn nào</p>
-          )}
-          ;
+          )}          
         </div>
-
         <div className="pagination">
-          <button
-            onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
-            disabled={page === 0 || isFetching}
-          >
-            Trang trước
-          </button>
+          <button onClick={handleFirtPage} disabled={currentPage==0} >Trang đầu</button>
+          <button onClick={handlePreviosPage} disabled={currentPage<=0}>Trang trước</button>
           <span>
-            Trang {page + 1} / {totalPages}
-          </span>
-          <button
-            onClick={() =>
-              setPage((prev) => Math.min(prev + 1, totalPages - 1))
+            {
+              pageNumbers.map((pn)=>(
+                <button key={pn} onClick={()=>handlePageClick(pn)} disabled={currentPage === pn}>{pn+1}</button>
+              ))
             }
-            disabled={page === totalPages - 1 || isFetching}
-          >
-            Trang sau
-          </button>
+          </span>
+          <button onClick={handleNextPage} disabled={currentPage>=totalPages-1}>Trang sau</button>
+          <button onClick={handleLastPage} disabled={currentPage==totalPages-1} >Trang cuối</button>
         </div>
+        
       </div>
     );
 

@@ -1,125 +1,159 @@
-import React, { useState } from "react"; // Import React và hook useState để quản lý trạng thái
-import { useQuery } from "@tanstack/react-query"; // Import hook useQuery từ react-query để lấy dữ liệu từ API
-import { getAllDoAn2 } from "../../api/DoAnApi"; // Import hàm API để lấy danh sách món ăn
-import AddCartModal from "./AddCartModal"; // Import component AddCartModal để hiển thị chi tiết món ăn
-import "../../styles/SanPham/TranChuDoAn.css"; // Import file CSS để định kiểu cho trang
+import React,{useEffect,useState} from "react";
+import { toast } from "react-toastify";
+import { getAllTrangChu, getDoAnById } from "../../api/DoAnApi";
+import "../../styles/SanPham/TranChuDoAn.css"; 
+import AddCartModal from "./AddCartModal";
 
-// Định nghĩa component PageTranChuDoAn, nhận prop searchTerm để tìm kiếm món ăn
-const PageTranChuDoAn = ({ searchTerm }) => {
-  // State để kiểm soát việc mở/đóng modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  // State để lưu món ăn được chọn khi mở modal
-  const [selectedDoAn, setSelectedDoAn] = useState(null);
-  // State để theo dõi trang hiện tại trong phân trang
-  const [page, setPage] = useState(0);
-  // State để xác định số lượng món ăn mỗi trang, không thay đổi nên dùng const
-  const [size] = useState(12);
 
-  // Sử dụng useQuery để lấy danh sách món ăn từ API
-  const {
-    data: doAn, // Dữ liệu trả về từ API
-    error, // Lỗi nếu có
-    isLoading, // Trạng thái đang tải lần đầu
-    isFetching, // Trạng thái đang tải (bao gồm cả khi refetch)
-  } = useQuery({
-    queryKey: ["doAn", page, searchTerm], // Key để cache dữ liệu, thay đổi khi page hoặc searchTerm thay đổi
-    queryFn: () => getAllDoAn2(page, size, searchTerm), // Hàm gọi API để lấy dữ liệu
-    keepPreviousData: true, // Giữ dữ liệu cũ khi đang tải dữ liệu mới (tránh nhấp nháy giao diện)
-    staleTime: 5000, // Dữ liệu được coi là "tươi" trong 5 giây trước khi refetch
-  });
+const PageTrangChuDoAn = () => {
+  const [trangChuPage,setTrangChuPage] = useState([]);
+  const [loading,setLoading] = useState(true);
+  const [error,setError] = useState(null);
+  const [currentPage,setCurrentPage] = useState(0);
+  const [totalPages,setTotalPages] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [showForm,setShowForm] = useState(false);
+  const [showDetailForm,setShowDetailForm] = useState(false);
+  const [selectedMonAn,setSelectedMonAn] = useState(null);
+  const pageSize = 12;
 
-  // Hàm xử lý khi nhấn nút "Xem chi tiết" để mở modal
-  const handleShowDetails = (doAn) => {
-    setSelectedDoAn(doAn); // Lưu món ăn được chọn
-    setIsModalOpen(true); // Mở modal
+  const handlePreviosPage = ()=>{
+    if (currentPage>0) {
+      setCurrentPage(currentPage-1);
+    }
+  }
+
+  const handleNextPage = ()=>{
+    if(currentPage<totalPages-1){
+      setCurrentPage(currentPage+1);
+    }
+  }
+  const handleFirtPage =()=>{
+    setCurrentPage(0)
+  }
+  const handleLastPage=()=>{
+    setCurrentPage(totalPages-1)
+  }
+
+  const handlePageClick =(page)=>{
+    setCurrentPage(page);
+  }
+  const handleOpenForm =()=>{
+    setShowForm(true);
+  }
+  const handleCloseForm =()=>{
+    setShowForm(false);
+  }
+  
+  const handleShowDetail = async(id)=>{
+    
+    try {
+      setLoading(true);
+      const data = await getDoAnById(id);
+      setSelectedMonAn(data);
+      setShowDetailForm(true);
+      setLoading(false);
+    } catch (error) {
+      setError(`Khong tim thay mon an voi id ${id}`);
+      setLoading(false);
+    }
+  }
+
+  const handleCloseDetailForm=()=>{
+    setShowDetailForm(false);
+    setSelectedMonAn(null);
+  }
+
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    setCurrentPage(0);
+    setSearchKeyword(searchTerm); // trigger useEffect để gọi API
+  };
+  const pageNumbers = Array.from({length:totalPages},(_,index)=>index);
+
+
+  const fetchTrangChuDoAn = async (page,search) => {
+    try {
+      setLoading(true);
+      const data = await getAllTrangChu(page, pageSize,search);
+      console.log("Dữ liệu từ back end", data);
+      setTrangChuPage(data.content || []);
+      setTotalPages(data.totalPages || 0);
+      setLoading(false);
+    } catch (error) {
+      setError("Không thể tải danh sách nhân viên");
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchTrangChuDoAn(currentPage, searchKeyword);
+  }, [currentPage, searchKeyword]);
+
+  if (loading) {
+    return <div>Đang tải dữ liệu .... </div>;
+  }
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  const handleReset = () => {
+    setSearchTerm("");
+    setSearchKeyword("");
+    setCurrentPage(0);
   };
 
-  // Hàm đóng modal
-  const handleCloseModal = () => {
-    setIsModalOpen(false); // Đóng modal
-    setSelectedDoAn(null); // Xóa món ăn được chọn
-  };
-
-  // Nếu đang tải lần đầu, hiển thị thông báo "Đang tải..."
-  if (isLoading) return <p>Đang tải...</p>;
-  // Nếu có lỗi, hiển thị thông báo lỗi
-  if (error) return <p>Lỗi: {error.message}</p>;
-
-  // Lấy danh sách món ăn từ dữ liệu API, mặc định là mảng rỗng nếu không có
-  const danhSachDoAn = doAn?.content || [];
-  // Lấy tổng số trang từ dữ liệu API, mặc định là 0 nếu không có
-  const totalPages = doAn?.totalPages || 0;
-
-  // Giao diện của trang
   return (
-    <div className="tran-chu-do-an"> {/* Container chính của trang */}
-      <h1 className="page-title">Danh sách món ăn</h1> {/* Tiêu đề trang */}
-      <div className="do-an-list"> {/* Phần hiển thị danh sách món ăn */}
-        {/* Hiển thị "Đang tải..." khi đang fetch dữ liệu (kể cả khi chuyển trang) */}
-        {isFetching && <div className="search-loading">Đang tải...</div>}
-        
-        {/* Kiểm tra nếu có món ăn trong danh sách */}
-        {danhSachDoAn.length > 0 ? (
-          <div className="do-an-grid"> {/* Lưới hiển thị các món ăn */}
-            {danhSachDoAn.map((da) => ( // Duyệt qua từng món ăn
-              <div key={da.id} className="card"> {/* Thẻ hiển thị thông tin mỗi món */}
-                <img
-                  src={
-                    da.hinhAnh // Kiểm tra nếu món ăn có hình ảnh
-                      ? `http://localhost:8080/uploads/${da.hinhAnh}` // Dùng URL từ server
-                      : "/placeholder-image.png" // Nếu không có, dùng ảnh placeholder
-                  }
-                  alt={da.ten} // Tên món ăn làm alt text
-                  className="card-img-top do-an-img" // Class CSS cho ảnh
-                />
-                <div className="card-body do-an-info"> {/* Phần thông tin món ăn */}
-                  <h3 className="do-an-name">{da.ten}</h3> {/* Tên món ăn */}
-                  <p className="do-an-price">
-                    {Number(da.giaTien).toLocaleString()} đ {/* Giá tiền, định dạng số */}
-                  </p>
-                  <button
-                    className="do-an-order-btn" // Nút xem chi tiết
-                    onClick={() => handleShowDetails(da)} // Gọi hàm mở modal với món ăn được chọn
-                  >
-                    <i className="fas fa-shopping-cart"></i> Xem chi tiết {/* Icon và text */}
+    <div className="tran-chu-do-an">
+      <h1 className="page-title">Danh sách món ăn</h1>
+      <form className="form-search" onSubmit={handleSearchSubmit}>
+        <div className="search input-group">
+            <input type="text" class="form-control" placeholder="Mời bạn nhập tên món ăn .... "value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            <button class="btn btn-outline-secondary" type="submit" disabled={loading}>Tìm kiếm</button>
+            <button class="btn btn-outline-secondary" type="button" onClick={handleReset}>Reset</button>
+        </div>
+      </form>
+      
+      <div className="do-an-list">          
+        {trangChuPage.length > 0 ? (
+          <div className="do-an-grid">
+            {trangChuPage.map((da) => (
+              <div key={da.id} className="card">
+                <img src={ da.hinhAnh ? `http://localhost:8080/uploads/${da.hinhAnh}` : "/placeholder-image.png" } alt={da.ten} className="card-img-top do-an-img" />
+                <div className="card-body do-an-info">
+                  <h3 className="do-an-name">{da.ten}</h3>
+                  <p className="do-an-price">{da.giaTien} đ </p>
+                  <button className="do-an-order-btn" type="button" onClick={()=>handleShowDetail(da.id)}>
+                    <i className="fas fa-shopping-cart"></i> Chi tiết
                   </button>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <p>Không tìm thấy món ăn nào.</p> // Thông báo nếu không có món ăn
-        )}
+          <p>Không có món ăn nào</p>
+        )}          
       </div>
-
-      {/* Phần phân trang */}
       <div className="pagination">
-        <button
-          onClick={() => setPage((prev) => Math.max(prev - 1, 0))} // Chuyển về trang trước, không nhỏ hơn 0
-          disabled={page === 0 || isFetching} // Vô hiệu hóa nếu đang ở trang đầu hoặc đang tải
-        >
-          Trang trước
-        </button>
+        <button onClick={handleFirtPage} disabled={currentPage==0} >Trang đầu</button>
+        <button onClick={handlePreviosPage} disabled={currentPage<=0}>Trang trước</button>
         <span>
-          Trang {page + 1} / {totalPages} {/* Hiển thị trang hiện tại và tổng số trang */}
+          {
+            pageNumbers.map((pn)=>(
+              <button key={pn} onClick={()=>handlePageClick(pn)} disabled={currentPage === pn}>{pn+1}</button>
+            ))
+          }
         </span>
-        <button
-          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages - 1))} // Chuyển sang trang sau, không vượt quá totalPages
-          disabled={page + 1 >= totalPages || isFetching} // Vô hiệu hóa nếu ở trang cuối hoặc đang tải
-        >
-          Trang sau
-        </button>
+        <button onClick={handleNextPage} disabled={currentPage>=totalPages-1}>Trang sau</button>
+        <button onClick={handleLastPage} disabled={currentPage==totalPages-1} >Trang cuối</button>
       </div>
-
-      {/* Component modal để hiển thị chi tiết món ăn */}
-      <AddCartModal
-        isOpen={isModalOpen} // Trạng thái mở/đóng modal
-        onClose={handleCloseModal} // Hàm đóng modal
-        doAn={selectedDoAn} // Món ăn được chọn
-      />
+      {showDetailForm&&<AddCartModal monAn={selectedMonAn} onClose={handleCloseDetailForm} />}
     </div>
   );
+
 };
 
+
 // Xuất component để sử dụng ở nơi khác
-export default PageTranChuDoAn;
+export default PageTrangChuDoAn;

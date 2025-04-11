@@ -1,40 +1,69 @@
 .checkout-page {
-    padding: 20px;
-    width: 75%;
-    margin: 0 auto;    
-  }
-  .checkout-page h1{
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.checkout-content {
+  display: flex;
+  gap: 20px;
+}
+
+.checkout-form,
+.checkout-summary {
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.checkout-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.checkout-table th,
+.checkout-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-item-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.total-price {
+  text-align: right;
+  font-size: 1.2em;
+  margin-top: 10px;
+}
+
+.checkout-button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
   .checkout-content {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
+    flex-direction: column;
   }
-  
-  .checkout-form, .checkout-summary {
-    width: 48%;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .checkout-form h2, .checkout-summary h2 {
-    margin-bottom: 20px;
-  }
-  
-  .checkout-form label {
-    display: block;
-    margin-bottom: 15px;
-  }
-  
-  .checkout-form input, .checkout-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
+}

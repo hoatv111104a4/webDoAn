@@ -13,7 +13,7 @@ import PageDoAnTrangMieng from "../components/QuanLyDoAn/DoAnTrangMieng";
 import PageNuocuong from "../components/QuanLyDoAn/NuocUong";
 import RegisterForm from "../components/QuanLyDoAn/FormDangKi";
 import LoginForm from "../components/QuanLyDoAn/FormDangNhap";
-import CheckoutPage from "../components/QuanLyDoAn/CheckoutPage";
+
 import { CartProvider } from "../components/QuanLyDoAn/CartContext";
 
 function Layout2() {
@@ -49,7 +49,7 @@ function Layout2() {
               <Route path="nuoc-uong" element={<PageNuocuong />} />
               <Route path="login" element={<LoginForm setUserInfo={setUserInfo} />} />
               <Route path="register" element={<RegisterForm setUserInfo={setUserInfo} />} />
-              <Route path="checkout" element={<CheckoutPage />} />
+              
             </Route>
           </Routes>
         </div>
