@@ -135,10 +135,11 @@
   gap: 5px;
 }
 
-.form-search {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.form-search {  
+  border: 1px solid rgb(229, 229, 229);  
+  width: 95%;
+  margin: 0 auto;
+  padding: 20px;
 }
 .form-search .input-group {
   width: 96%; 

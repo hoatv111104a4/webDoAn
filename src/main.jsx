@@ -8,6 +8,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Layout2 from "./layouts/Layout2";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Routes>
           <Route path="/*" element={<App />} />
           <Route path="/website/*" element={<Layout2 />} />
+          
         </Routes>      
     </Router>
   </QueryClientProvider>

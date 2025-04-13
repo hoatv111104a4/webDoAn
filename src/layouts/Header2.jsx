@@ -17,37 +17,38 @@ const Header2 = ({  userInfo }) => {
         <div className="logo">
           <img src={logo} alt="logo" />
         </div>
-        
-        <div className="cart" >
-          <i className="fas fa-shopping-cart"></i> Giỏ hàng 
-        </div>
-        <div className="user">
-          {!userInfo ? (
-            <div className="account-options">
-              <button
-                className="account-button"
-                onClick={() => navigate("/website/login")}
-              >
-                Đăng nhập
-              </button>
-              <button
-                className="account-button"
-                onClick={() => navigate("/website/register")}
-              >
-                Đăng ký
-              </button>
-            </div>
-          ) : (
-            <div className="account-logged-in">
-              <span className="user-name">Xin chào: {userInfo.name}</span>
-              <button onClick={handleLogout} className="logout-button">
-                Đăng xuất
-              </button>
-              <button onClick={() => navigate("/")} className="logout-button">
-                Cửa hàng của tôi
-              </button>
-            </div>
-          )}
+        <div className="users-and-cart">
+          <div className="cart" >
+            <i className="fas fa-shopping-cart"></i> Giỏ hàng 
+          </div>
+          <div className="user">
+            {!userInfo ? (
+              <div className="account-options">
+                <button
+                  className="account-button"
+                  onClick={() => navigate("/website/login")}
+                >
+                  Đăng nhập
+                </button>
+                <button
+                  className="account-button"
+                  onClick={() => navigate("/website/register")}
+                >
+                  Đăng ký
+                </button>
+              </div>
+            ) : (
+              <div className="account-logged-in">
+                <span className="user-name">Xin chào: {userInfo.name}</span>
+                <button onClick={handleLogout} className="logout-button">
+                  Đăng xuất
+                </button>
+                <button onClick={() => navigate("/")} className="logout-button">
+                  Cửa hàng của tôi
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <nav className="menu">

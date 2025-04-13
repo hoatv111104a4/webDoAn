@@ -46,17 +46,13 @@ const PageTrangChuDoAn = () => {
     setShowForm(false);
   }
   
-  const handleShowDetail = async(id)=>{
-    
-    try {
-      setLoading(true);
+  const handleShowDetail = async(id)=>{    
+    try {      
       const data = await getDoAnById(id);
       setSelectedMonAn(data);
-      setShowDetailForm(true);
-      setLoading(false);
+      setShowDetailForm(true);      
     } catch (error) {
-      setError(`Khong tim thay mon an voi id ${id}`);
-      setLoading(false);
+      setError(`Khong tim thay mon an voi id ${id}`);      
     }
   }
 
@@ -109,9 +105,9 @@ const PageTrangChuDoAn = () => {
       <h1 className="page-title">Danh sách món ăn</h1>
       <form className="form-search" onSubmit={handleSearchSubmit}>
         <div className="search input-group">
-            <input type="text" class="form-control" placeholder="Mời bạn nhập tên món ăn .... "value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-            <button class="btn btn-outline-secondary" type="submit" disabled={loading}>Tìm kiếm</button>
-            <button class="btn btn-outline-secondary" type="button" onClick={handleReset}>Reset</button>
+            <input type="text" className="form-control" placeholder="Mời bạn nhập tên món ăn .... "value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            <button className="btn btn-outline-secondary" type="submit" disabled={loading}>Tìm kiếm</button>
+            <button className="btn btn-outline-secondary" type="button" onClick={handleReset}>Reset</button>
         </div>
       </form>
       

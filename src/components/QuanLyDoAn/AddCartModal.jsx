@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { getDoAnById } from "../../api/DoAnApi";
 import { useNavigate } from "react-router-dom";
+import "../../styles/SanPham/AddCartModal.css"
 const AddCartModal = ({ monAn, onClose }) => {
   const navigate = useNavigate();
   if (!monAn) {
@@ -16,7 +17,7 @@ const AddCartModal = ({ monAn, onClose }) => {
       hinhAnh: monAn.hinhAnh,
       soLuong: quantity,
     };
-    navigate("/checkout", { state: { cartItems: [cartItem] } });
+    navigate("/website/checkout", { state: { cartItems: [cartItem] } });
     onClose();
   };
 
@@ -41,7 +42,7 @@ const AddCartModal = ({ monAn, onClose }) => {
             <button type="button" className="btn-close" onClick={onClose} ></button>
           </div>
           <div className="modal-body">
-            <form>
+            <form onSubmit={(e) => e.preventDefault()}>
             {
                 monAn.hinhAnh && (
                   <div className="mb-3">

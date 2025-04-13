@@ -14,11 +14,12 @@
 .header2-container {
   width: 75%;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: center;  
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  padding: 20px;
+  justify-content: space-between;
 }
 
 /* Logo */
@@ -26,6 +27,7 @@
   flex: 0 0 auto;
   display: flex;
   align-items: center;
+  
 }
 
 .header2 .logo img {
@@ -43,6 +45,8 @@
   color: #333;
   cursor: pointer;
   transition: color 0.3s ease;
+  
+  
 }
 
 .header2 .user {
@@ -194,5 +198,10 @@
   .menu-item {
     margin: 5px;
   }
+}
+
+.users-and-cart{
+  display: flex;  
+  justify-content: center;
 }
 

@@ -13,8 +13,9 @@ import PageDoAnTrangMieng from "../components/QuanLyDoAn/DoAnTrangMieng";
 import PageNuocuong from "../components/QuanLyDoAn/NuocUong";
 import RegisterForm from "../components/QuanLyDoAn/FormDangKi";
 import LoginForm from "../components/QuanLyDoAn/FormDangNhap";
-
+import CheckoutPage from "../components/QuanLyDoAn/CheckoutPage";
 import { CartProvider } from "../components/QuanLyDoAn/CartContext";
+import { ToastContainer } from "react-toastify";
 
 function Layout2() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -37,6 +38,7 @@ function Layout2() {
     <CartProvider> {/* Bọc toàn bộ nội dung trong CartProvider */}
       <div className="app2">
         <Header2 onSearch={handleSearch} userInfo={userInfo} />
+        <ToastContainer position="top-right" autoClose={3000}/>
         <Banner />
         <div className="website-content">
           <Routes>
@@ -49,7 +51,7 @@ function Layout2() {
               <Route path="nuoc-uong" element={<PageNuocuong />} />
               <Route path="login" element={<LoginForm setUserInfo={setUserInfo} />} />
               <Route path="register" element={<RegisterForm setUserInfo={setUserInfo} />} />
-              
+              <Route path="checkout" element={<CheckoutPage/>} />
             </Route>
           </Routes>
         </div>
